@@ -1,13 +1,13 @@
 DESCRIPTION = "Xen PV Display backend"
 SECTION = "extras"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 PR = "r0"
 
 S = "${WORKDIR}/git"
 
 inherit pkgconfig cmake  systemd
 
-SYSTEMD_SERVICE_${PN} = "displbe.service"
+SYSTEMD_SERVICE:${PN} = "displbe.service"
 
 SRC_URI = " \
     git://github.com/xen-troops/displ_be.git;protocol=https;branch=master \
@@ -41,15 +41,15 @@ RDEPDENDS_${PN} += " \
     xen-tools-xenstore \
 "
 
-RRECOMMENDS_${PN} += " \
+RRECOMMENDS:${PN} += " \
     virtual/xenstored \
 "
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${systemd_system_unitdir}/displbe.service \
 "
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/displbe.service ${D}${systemd_system_unitdir}
 }
