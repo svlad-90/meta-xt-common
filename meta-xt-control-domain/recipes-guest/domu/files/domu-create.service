@@ -1,0 +1,23 @@
+# NOTE 1
+# Pay attention, that this file starts and pauses the DomU right away.
+# This is done by intention, as we need to start QEMU in DomD before
+# unpausing the guest domain.
+
+[Unit]
+Description=DomU VM creator service
+
+[Service]
+Type=oneshot
+
+ExecStart=/bin/bash -c '/usr/sbin/xl create /etc/xen/domu.cfg && /usr/sbin/xl pause DomU'
+
+ExecStartPost=/usr/lib/xen/bin/domu-create-ExecStartPost.sh
+
+ExecStop=/usr/lib/xen/bin/domu-create-ExecStop.sh
+
+Restart=on-failure
+RestartSec=5
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

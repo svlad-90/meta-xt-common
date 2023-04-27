@@ -7,5 +7,7 @@ IMAGE_INSTALL:append = " \
     xen-network \
     dnsmasq \
     block \
+    backend-ready \
+    qemu-command-handler \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ivi-shell', 'displaymanager', '', d)} \
 "
