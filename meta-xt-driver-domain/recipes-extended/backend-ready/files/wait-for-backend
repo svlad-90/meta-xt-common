@@ -7,8 +7,7 @@ fi
 
 BACKEND=$1
 
-DOMD_ID=`xl domid DomD`
-XS_PATH="/local/domain/$DOMD_ID/drivers/$BACKEND/status"
+XS_PATH="drivers/$BACKEND/status"
 
 CURRENT_STATUS="unknown"
 

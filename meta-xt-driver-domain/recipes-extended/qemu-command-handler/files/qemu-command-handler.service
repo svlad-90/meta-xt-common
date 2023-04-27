@@ -1,0 +1,22 @@
+[Unit]
+Description=QEMU command handler
+Requires=backend-ready@dom0-qemu-command-monitor.service weston.service
+After=backend-ready@dom0-qemu-command-monitor.service weston.service
+
+[Service]
+Type=simple
+Environment=WAYLAND_DISPLAY=wayland-1
+EnvironmentFile=/etc/default/weston
+
+ExecStart=/usr/lib/xen/bin/qemu-command-handler-ExecStart.sh
+
+ExecStartPost=/usr/bin/xenstore-write drivers/domd-qemu-monitor/status ready
+
+ExecStop=/usr/bin/xenstore-write drivers/domd-qemu-monitor/status dead
+
+Restart=on-failure
+RestartSec=5
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

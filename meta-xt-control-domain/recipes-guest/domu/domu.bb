@@ -9,20 +9,29 @@ inherit externalsrc systemd
 
 EXTERNALSRC_SYMLINKS = ""
 
+# We rely on the bash availability
+RDEPENDS:${PN} = "bash"
+
 SRC_URI = "\
     file://${XT_DOMU_CONFIG_NAME} \
     file://domu-vdevices.cfg \
-    file://domu.service \
+    file://domu-create.service \
+    file://domu-unpause.service \
+    file://domu-create-ExecStartPost.sh \
+    file://domu-create-ExecStop.sh \
 "
 
 FILES:${PN} = " \
     ${sysconfdir}/xen/domu.cfg \
     ${libdir}/xen/boot/domu.dtb \
     ${libdir}/xen/boot/linux-domu \
-    ${systemd_unitdir}/system/domu.service \
+    ${systemd_unitdir}/system/domu-create.service \
+    ${systemd_unitdir}/system/domu-unpause.service \
+    ${libdir}/xen/bin/domu-create-ExecStartPost.sh \
+    ${libdir}/xen/bin/domu-create-ExecStop.sh \
 "
 
-SYSTEMD_SERVICE:${PN} = "domu.service"
+SYSTEMD_SERVICE:${PN} = "domu-create.service domu-unpause.service"
 
 do_install() {
     install -d ${D}${sysconfdir}/xen
@@ -32,5 +41,10 @@ do_install() {
     install -m 0644 ${S}/Image ${D}${libdir}/xen/boot/linux-domu
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/domu.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/domu-create.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/domu-unpause.service ${D}${systemd_unitdir}/system/
+
+    install -d ${D}${libdir}/xen/bin
+    install -m 0755 ${WORKDIR}/domu-create-ExecStartPost.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/domu-create-ExecStop.sh ${D}${libdir}/xen/bin/
 }

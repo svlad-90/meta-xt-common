@@ -1,5 +1,5 @@
 [Unit]
-Description=Android VM
+Description=Android VM creator service
 # NOTE 1
 # Pay attention that corresponding part for
 # Dom0's backend-ready@block.service is
@@ -11,13 +11,25 @@ Description=Android VM
 # Dependencies (After=, Requires=) cannot be reset to an empty list,
 # so dependencies can only be added in drop-ins. If you want to
 # remove dependencies, you have to override the entire unit.
+# NOTE 4
+# Pay attention, that this file starts and pauses the DomA right away.
+# This is done by intention, as we need to start QEMU in DomD before
+# unpausing the guest domain.
+
 Requires=backend-ready@block.service
 After=backend-ready@block.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/xl create /etc/xen/doma.cfg
-ExecStop=/usr/sbin/xl destroy DomA
+
+ExecStart=/bin/bash -c '/usr/sbin/xl create /etc/xen/doma.cfg && /usr/sbin/xl pause DomA'
+
+ExecStartPost=/usr/lib/xen/bin/doma-create-ExecStartPost.sh
+
+ExecStop=/usr/lib/xen/bin/doma-create-ExecStop.sh
+
+Restart=on-failure
+RestartSec=5
 RemainAfterExit=true
 
 [Install]

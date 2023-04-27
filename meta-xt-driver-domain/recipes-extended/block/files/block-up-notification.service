@@ -9,7 +9,6 @@ After=-.mount xenstored.service
 Type=simple
 ExecStart=/usr/bin/xenstore-write drivers/block/status ready
 RemainAfterExit=yes
-ExecStopPost=/usr/bin/xenstore-write drivers/block/status dead
 Restart=on-failure
 
 [Install]

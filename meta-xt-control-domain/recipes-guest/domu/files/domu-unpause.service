@@ -1,0 +1,17 @@
+[Unit]
+Description=DomU VM unpause service
+
+Requires=backend-ready@domd-qemu-monitor.service
+After=backend-ready@domd-qemu-monitor.service
+
+[Service]
+Type=oneshot
+
+ExecStart=/usr/sbin/xl unpause DomU
+
+Restart=on-failure
+RestartSec=5
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
