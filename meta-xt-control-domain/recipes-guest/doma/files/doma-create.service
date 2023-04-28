@@ -1,5 +1,3 @@
-[Unit]
-Description=Android VM creator service
 # NOTE 1
 # Pay attention that corresponding part for
 # Dom0's backend-ready@block.service is
@@ -15,9 +13,15 @@ Description=Android VM creator service
 # Pay attention, that this file starts and pauses the DomA right away.
 # This is done by intention, as we need to start QEMU in DomD before
 # unpausing the guest domain.
+# NOTE 5
+# This service depends on 'doma-restart-monitor.service', as when that
+# service fails, it is intended to restart DomA.
 
-Requires=backend-ready@block.service
-After=backend-ready@block.service
+[Unit]
+Description=Android VM creator service
+
+Requires=backend-ready@block.service doma-restart-monitor.service
+After=backend-ready@block.service doma-restart-monitor.service
 
 [Service]
 Type=oneshot
@@ -27,6 +31,7 @@ ExecStart=/bin/bash -c '/usr/sbin/xl create /etc/xen/doma.cfg && /usr/sbin/xl pa
 ExecStartPost=/usr/lib/xen/bin/doma-create-ExecStartPost.sh
 
 ExecStop=/usr/lib/xen/bin/doma-create-ExecStop.sh
+OnFailure=/usr/lib/xen/bin/doma-create-ExecStop.sh
 
 Restart=on-failure
 RestartSec=5

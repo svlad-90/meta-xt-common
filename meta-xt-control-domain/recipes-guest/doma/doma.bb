@@ -18,6 +18,8 @@ SRC_URI = "\
     file://doma-unpause.service \
     file://doma-create-ExecStartPost.sh \
     file://doma-create-ExecStop.sh \
+    file://doma-restart-monitor.service \
+    file://doma-restart-monitor-ExecStart.sh \
 "
 
 python () {
@@ -32,6 +34,8 @@ FILES:${PN} = " \
     ${systemd_unitdir}/system/doma-unpause.service \
     ${libdir}/xen/bin/doma-create-ExecStartPost.sh \
     ${libdir}/xen/bin/doma-create-ExecStop.sh \
+    ${systemd_unitdir}/system/doma-restart-monitor.service \
+    ${libdir}/xen/bin/doma-restart-monitor-ExecStart.sh \
 "
 
 SYSTEMD_SERVICE:${PN} = "doma-create.service doma-unpause.service"
@@ -45,8 +49,10 @@ do_install() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/doma-create.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/doma-unpause.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/doma-restart-monitor.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${libdir}/xen/bin
     install -m 0755 ${WORKDIR}/doma-create-ExecStartPost.sh ${D}${libdir}/xen/bin/
     install -m 0755 ${WORKDIR}/doma-create-ExecStop.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/doma-restart-monitor-ExecStart.sh ${D}${libdir}/xen/bin/
 }
