@@ -2,9 +2,17 @@
 # Pay attention, that this file starts and pauses the DomU right away.
 # This is done by intention, as we need to start QEMU in DomD before
 # unpausing the guest domain.
+# NOTE 2
+# DomU should be started after DomD, as there are parameters across
+# the system, which rely on DomD having the Xen domain id equal to '1'
+# NOTE 3
+# This service depends on 'doma-restart-monitor.service', as when that
+# service fails, it is intended to restart DomA.
 
 [Unit]
 Description=DomU VM creator service
+Requires=domd.service domu-restart-monitor.service
+After=domd.service domu-restart-monitor.service
 
 [Service]
 Type=oneshot
@@ -14,6 +22,7 @@ ExecStart=/bin/bash -c '/usr/sbin/xl create /etc/xen/domu.cfg && /usr/sbin/xl pa
 ExecStartPost=/usr/lib/xen/bin/domu-create-ExecStartPost.sh
 
 ExecStop=/usr/lib/xen/bin/domu-create-ExecStop.sh
+OnFailure=/usr/lib/xen/bin/doma-create-ExecStop.sh
 
 Restart=on-failure
 RestartSec=5

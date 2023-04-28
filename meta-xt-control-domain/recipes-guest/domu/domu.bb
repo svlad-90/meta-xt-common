@@ -19,6 +19,8 @@ SRC_URI = "\
     file://domu-unpause.service \
     file://domu-create-ExecStartPost.sh \
     file://domu-create-ExecStop.sh \
+    file://domu-restart-monitor.service \
+    file://domu-restart-monitor-ExecStart.sh \
 "
 
 FILES:${PN} = " \
@@ -29,6 +31,8 @@ FILES:${PN} = " \
     ${systemd_unitdir}/system/domu-unpause.service \
     ${libdir}/xen/bin/domu-create-ExecStartPost.sh \
     ${libdir}/xen/bin/domu-create-ExecStop.sh \
+    ${systemd_unitdir}/system/domu-restart-monitor.service \
+    ${libdir}/xen/bin/domu-restart-monitor-ExecStart.sh \
 "
 
 SYSTEMD_SERVICE:${PN} = "domu-create.service domu-unpause.service"
@@ -43,8 +47,10 @@ do_install() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/domu-create.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/domu-unpause.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/domu-restart-monitor.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${libdir}/xen/bin
     install -m 0755 ${WORKDIR}/domu-create-ExecStartPost.sh ${D}${libdir}/xen/bin/
     install -m 0755 ${WORKDIR}/domu-create-ExecStop.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/domu-restart-monitor-ExecStart.sh ${D}${libdir}/xen/bin/
 }

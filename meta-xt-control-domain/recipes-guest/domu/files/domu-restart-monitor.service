@@ -1,0 +1,14 @@
+[Unit]
+Description=DomU VM restart service
+
+[Service]
+Type=simple
+
+ExecStart=/usr/lib/xen/bin/domu-restart-monitor-ExecStart.sh
+
+Restart=on-failure
+RestartSec=5
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
