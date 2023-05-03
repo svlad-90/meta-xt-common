@@ -24,7 +24,8 @@ qemu-system-aarch64 \
 -global virtio-mmio.force-legacy=false \
 -device virtio-keyboard-pci,disable-legacy=on,iommu_platform=on \
 -audiodev alsa,id=snd0,out.dev=default \
--device virtio-snd-pci,audiodev=snd0,disable-legacy=on,iommu_platform=on & \
+-device virtio-snd-pci,audiodev=snd0,disable-legacy=on,iommu_platform=on \
+-full-screen & \
 QEMU_PID=\$!; \
 sleep 5 && brctl addif xenbr0 vif-emu && ifconfig vif-emu up && \
 wait \${QEMU_PID}" && \
