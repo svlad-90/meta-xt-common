@@ -30,5 +30,5 @@ while true; do
         echo "Domain 'DomA' with id '${DOMA_ID}' has become unavailable. \
 Failing to notify dependent services. Will be restarted soon ...";
         exit 1;
-    fi 
+    fi
 done
