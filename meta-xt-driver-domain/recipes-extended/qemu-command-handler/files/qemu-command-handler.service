@@ -10,12 +10,9 @@ EnvironmentFile=/etc/default/weston
 
 ExecStart=/usr/lib/xen/bin/qemu-command-handler-ExecStart.sh
 
-ExecStartPost=/usr/bin/xenstore-write drivers/domd-qemu-monitor/status ready
-
-ExecStop=/usr/bin/xenstore-write drivers/domd-qemu-monitor/status dead
+ExecStopPost=/bin/bash -c '/usr/bin/xenstore-write drivers/domd-qemu-monitor/status dead && echo "[qemu-command-handler]: QEMU stopped";'
 
 Restart=on-failure
-RestartSec=5
 RemainAfterExit=yes
 
 [Install]

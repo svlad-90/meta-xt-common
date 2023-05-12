@@ -6,27 +6,26 @@
 # DomU should be started after DomD, as there are parameters across
 # the system, which rely on DomD having the Xen domain id equal to '1'
 # NOTE 3
-# This service depends on 'doma-restart-monitor.service', as when that
-# service fails, it is intended to restart DomA.
+# This service depends on 'domu-restart-monitor.service', as when that
+# service fails, it is intended to restart DomU.
 
 [Unit]
 Description=DomU VM creator service
-Requires=domd.service domu-restart-monitor.service
-After=domd.service domu-restart-monitor.service
+
+Requires=domd.service domu-restart-monitor.service qemu-restart-monitor.service
+After=domd.service domu-restart-monitor.service qemu-restart-monitor.service
 
 [Service]
-Type=oneshot
+Type=simple
 
-ExecStart=/bin/bash -c '/usr/sbin/xl create /etc/xen/domu.cfg && /usr/sbin/xl pause DomU'
+ExecStart=/usr/lib/xen/bin/domu-create-ExecStart.sh
 
-ExecStartPost=/usr/lib/xen/bin/domu-create-ExecStartPost.sh
+ExecStopPost=/usr/lib/xen/bin/domu-create-ExecStopPost.sh
 
-ExecStop=/usr/lib/xen/bin/domu-create-ExecStop.sh
-OnFailure=/usr/lib/xen/bin/doma-create-ExecStop.sh
-
-Restart=on-failure
-RestartSec=5
+Restart=always
 RemainAfterExit=true
+TimeoutStopSec=infinity
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

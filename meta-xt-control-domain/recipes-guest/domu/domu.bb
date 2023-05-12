@@ -17,8 +17,8 @@ SRC_URI = "\
     file://domu-vdevices.cfg \
     file://domu-create.service \
     file://domu-unpause.service \
-    file://domu-create-ExecStartPost.sh \
-    file://domu-create-ExecStop.sh \
+    file://domu-create-ExecStart.sh \
+    file://domu-create-ExecStopPost.sh \
     file://domu-restart-monitor.service \
     file://domu-restart-monitor-ExecStart.sh \
 "
@@ -29,8 +29,8 @@ FILES:${PN} = " \
     ${libdir}/xen/boot/linux-domu \
     ${systemd_unitdir}/system/domu-create.service \
     ${systemd_unitdir}/system/domu-unpause.service \
-    ${libdir}/xen/bin/domu-create-ExecStartPost.sh \
-    ${libdir}/xen/bin/domu-create-ExecStop.sh \
+    ${libdir}/xen/bin/domu-create-ExecStart.sh \
+    ${libdir}/xen/bin/domu-create-ExecStopPost.sh \
     ${systemd_unitdir}/system/domu-restart-monitor.service \
     ${libdir}/xen/bin/domu-restart-monitor-ExecStart.sh \
 "
@@ -50,7 +50,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/domu-restart-monitor.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${libdir}/xen/bin
-    install -m 0755 ${WORKDIR}/domu-create-ExecStartPost.sh ${D}${libdir}/xen/bin/
-    install -m 0755 ${WORKDIR}/domu-create-ExecStop.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/domu-create-ExecStart.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/domu-create-ExecStopPost.sh ${D}${libdir}/xen/bin/
     install -m 0755 ${WORKDIR}/domu-restart-monitor-ExecStart.sh ${D}${libdir}/xen/bin/
 }

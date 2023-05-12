@@ -20,22 +20,20 @@
 [Unit]
 Description=Android VM creator service
 
-Requires=backend-ready@block.service doma-restart-monitor.service
-After=backend-ready@block.service doma-restart-monitor.service
+Requires=backend-ready@block.service doma-restart-monitor.service qemu-restart-monitor.service
+After=backend-ready@block.service doma-restart-monitor.service qemu-restart-monitor.service
 
 [Service]
-Type=oneshot
+Type=simple
 
-ExecStart=/bin/bash -c '/usr/sbin/xl create /etc/xen/doma.cfg && /usr/sbin/xl pause DomA'
+ExecStart=/usr/lib/xen/bin/doma-create-ExecStart.sh
 
-ExecStartPost=/usr/lib/xen/bin/doma-create-ExecStartPost.sh
+ExecStopPost=/usr/lib/xen/bin/doma-create-ExecStopPost.sh
 
-ExecStop=/usr/lib/xen/bin/doma-create-ExecStop.sh
-OnFailure=/usr/lib/xen/bin/doma-create-ExecStop.sh
-
-Restart=on-failure
-RestartSec=5
+Restart=always
 RemainAfterExit=true
+TimeoutStopSec=infinity
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

@@ -6,8 +6,9 @@ Type=simple
 
 ExecStart=/usr/lib/xen/bin/domu-restart-monitor-ExecStart.sh
 
+ExecStopPost=echo "DomU restart monitor stopped!"
+
 Restart=on-failure
-RestartSec=5
 RemainAfterExit=true
 
 [Install]

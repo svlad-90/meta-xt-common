@@ -1,17 +1,17 @@
 [Unit]
 Description=Android VM unpause service
 
-Requires=backend-ready@domd-qemu-monitor.service
+Requires=backend-ready@domd-qemu-monitor.service doma-restart-monitor.service
 After=backend-ready@domd-qemu-monitor.service
 
 [Service]
-Type=oneshot
+Type=simple
 
-ExecStart=/usr/sbin/xl unpause DomA
+ExecStart=/bin/bash -c 'echo "[doma-unpause]: Unpausing DomA" && /usr/sbin/xl -v unpause DomA && echo "[doma-unpause]: Unpaused DomA"'
 
-Restart=on-failure
-RestartSec=5
+Restart=always
 RemainAfterExit=true
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

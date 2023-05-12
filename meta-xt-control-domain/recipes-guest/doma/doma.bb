@@ -16,8 +16,8 @@ RDEPENDS:${PN} = "u-boot-android bash"
 SRC_URI = "\
     file://doma-create.service \
     file://doma-unpause.service \
-    file://doma-create-ExecStartPost.sh \
-    file://doma-create-ExecStop.sh \
+    file://doma-create-ExecStart.sh \
+    file://doma-create-ExecStopPost.sh \
     file://doma-restart-monitor.service \
     file://doma-restart-monitor-ExecStart.sh \
 "
@@ -32,8 +32,8 @@ FILES:${PN} = " \
     ${libdir}/xen/boot/doma.dtb \
     ${systemd_unitdir}/system/doma-create.service \
     ${systemd_unitdir}/system/doma-unpause.service \
-    ${libdir}/xen/bin/doma-create-ExecStartPost.sh \
-    ${libdir}/xen/bin/doma-create-ExecStop.sh \
+    ${libdir}/xen/bin/doma-create-ExecStart.sh \
+    ${libdir}/xen/bin/doma-create-ExecStopPost.sh \
     ${systemd_unitdir}/system/doma-restart-monitor.service \
     ${libdir}/xen/bin/doma-restart-monitor-ExecStart.sh \
 "
@@ -52,7 +52,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/doma-restart-monitor.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${libdir}/xen/bin
-    install -m 0755 ${WORKDIR}/doma-create-ExecStartPost.sh ${D}${libdir}/xen/bin/
-    install -m 0755 ${WORKDIR}/doma-create-ExecStop.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/doma-create-ExecStart.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/doma-create-ExecStopPost.sh ${D}${libdir}/xen/bin/
     install -m 0755 ${WORKDIR}/doma-restart-monitor-ExecStart.sh ${D}${libdir}/xen/bin/
 }

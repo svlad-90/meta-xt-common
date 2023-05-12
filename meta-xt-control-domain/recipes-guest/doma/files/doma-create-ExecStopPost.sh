@@ -18,7 +18,7 @@
 
 DOMD_ID=$(xl list | awk '{ if ($1 == "DomD") print $2 }') && \
 /usr/bin/xenstore-write /local/domain/${DOMD_ID}/drivers/dom0-qemu-command-monitor/status dead && \
-( /usr/sbin/xl destroy DomA || true ); \
+echo "Destroying DomA" && ( /usr/sbin/xl -v destroy DomA || true ) && echo "Destroyed DomA"; \
 
 # Let's wait for hanging domains to shutdown
 HANGING_DOMAIN_ID_MEMORIZED="";
@@ -30,6 +30,7 @@ while true; do
         if [ -n "$HANGING_DOMAIN_ID_MEMORIZED" ]; then
              echo "Shutdown of the hanging domain with id '${HANGING_DOMAIN_ID_MEMORIZED}' has finished.";
         fi
+        echo "DomA stopped!";
         exit 0;
     else
         HANGING_DOMAIN_ID_MEMORIZED=${HANGING_DOMAIN_ID};
