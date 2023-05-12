@@ -6,8 +6,9 @@ Type=simple
 
 ExecStart=/usr/lib/xen/bin/doma-restart-monitor-ExecStart.sh
 
+ExecStopPost=echo "DomA restart monitor stopped!"
+
 Restart=on-failure
-RestartSec=5
 RemainAfterExit=true
 
 [Install]

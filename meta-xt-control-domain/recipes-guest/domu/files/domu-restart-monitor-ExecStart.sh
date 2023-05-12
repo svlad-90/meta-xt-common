@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "DomU restart monitor started!";
+
 # Fetch DomU Xen domain identifier
 DOMU_ID="";
 
@@ -32,3 +34,4 @@ Failing to notify dependent services. Will be restarted soon ...";
         exit 1;
     fi
 done
+

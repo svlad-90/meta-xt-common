@@ -1,11 +1,19 @@
 #!/bin/bash
 
+echo "Sleeping 5 seconds" && sleep 5;
+
+echo "Creating DomU" && /usr/sbin/xl -v create /etc/xen/domu.cfg && \
+echo "Created DomU" && \
+echo "Pausing DomU" && /usr/sbin/xl -v pause DomU && \
+echo "Paused DomU" && \
 DOMD_ID=$(xl list | awk '{ if ($1 == "DomD") print $2 }') && \
 DOMU_ID=$(xl list | awk '{ if ($1 == "DomU") print $2 }') && \
 echo "Parsed DOMD_ID is '${DOMD_ID}'" && \
+echo "Parsed DOMU_ID is '${DOMU_ID}'" && \
 echo "Writing QEMU command to xen-store" && \
 /usr/bin/xenstore-write /local/domain/${DOMD_ID}/drivers/dom0-qemu-command-monitor/value \
-"export SDL_VIDEODRIVER=wayland; \
+"echo \"QEMU starting.\"; \
+export SDL_VIDEODRIVER=wayland; \
 qemu-system-aarch64 \
 -xen-domid ${DOMU_ID} \
 -xen-attach \
@@ -13,8 +21,8 @@ qemu-system-aarch64 \
 -m $(grep "memory =" < /etc/xen/domu.cfg | sed -rne 's/^.*memory = ([0-9]+).*/\1/p') \
 -smp $(grep "vcpus =" < /etc/xen/domu.cfg | sed -rne 's/^.*vcpus = ([0-9]+).*/\1/p') \
 -d guest_errors \
--monitor /dev/null \
--device virtio-net-pci,disable-legacy=on,iommu_platform=on,romfile="",id=nic0,netdev=net0,mac=08:00:27:ff:cb:cf \
+-monitor telnet:127.0.0.1:1234,server,nowait \
+-device virtio-net-pci,disable-legacy=on,iommu_platform=on,romfile=\"\",id=nic0,netdev=net0,mac=08:00:27:ff:cb:cf \
 -netdev type=tap,id=net0,ifname=vif-emu,br=xenbr0,script=no,downscript=no \
 -device virtio-blk-pci,scsi=off,disable-legacy=on,iommu_platform=on,drive=image \
 -drive if=none,id=image,format=raw,file=/dev/mmcblk0p3 \
@@ -24,10 +32,12 @@ qemu-system-aarch64 \
 -global virtio-mmio.force-legacy=false \
 -device virtio-keyboard-pci,disable-legacy=on,iommu_platform=on \
 -audiodev alsa,id=snd0,out.dev=default \
--device virtio-snd-pci,audiodev=snd0,disable-legacy=on,iommu_platform=on \
--full-screen & \
+-device virtio-snd-pci,audiodev=snd0,disable-legacy=on,iommu_platform=on & \
 QEMU_PID=\$!; \
 sleep 5 && brctl addif xenbr0 vif-emu && ifconfig vif-emu up && \
-wait \${QEMU_PID}" && \
+sleep 3 && \
+echo \"QEMU started.\" && \
+/usr/bin/xenstore-write drivers/domd-qemu-monitor/status ready && \
+wait \${QEMU_PID};" \
 echo "Writing QEMU command status to xen-store" && \
 /usr/bin/xenstore-write /local/domain/${DOMD_ID}/drivers/dom0-qemu-command-monitor/status ready;

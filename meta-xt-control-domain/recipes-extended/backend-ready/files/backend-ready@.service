@@ -8,4 +8,4 @@ Type=notify
 ExecStart=/usr/lib/xen/bin/wait-for-backend %i
 RemainAfterExit=true
 Restart=on-failure
-RestartSec=5
+TimeoutStartSec=infinity

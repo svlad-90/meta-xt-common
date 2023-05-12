@@ -13,9 +13,9 @@ CURRENT_STATUS="unknown"
 
 while true; do
     if [ x$CURRENT_STATUS = x"unknown" ]; then
-        xenstore-watch -n1 $XS_PATH
+        xenstore-watch -n1 $XS_PATH > /dev/null
     else
-        xenstore-watch -n2 $XS_PATH
+        xenstore-watch -n2 $XS_PATH > /dev/null
     fi
 
     STATUS=`xenstore-read $XS_PATH`

@@ -5,13 +5,13 @@ Requires=backend-ready@domd-qemu-monitor.service
 After=backend-ready@domd-qemu-monitor.service
 
 [Service]
-Type=oneshot
+Type=simple
 
-ExecStart=/usr/sbin/xl unpause DomU
+ExecStart=/bin/bash -c 'echo "[domu-unpause]: Unpausing DomU" && /usr/sbin/xl -v unpause DomU && echo "[domu-unpause]: Unpaused DomU"'
 
-Restart=on-failure
-RestartSec=5
+Restart=always
 RemainAfterExit=true
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

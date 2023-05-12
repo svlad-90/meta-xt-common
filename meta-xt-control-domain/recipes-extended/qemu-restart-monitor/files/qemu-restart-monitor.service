@@ -1,0 +1,15 @@
+[Unit]
+Description=QEMU restart service
+
+[Service]
+Type=simple
+
+ExecStart=/usr/lib/xen/bin/qemu-restart-monitor-ExecStart.sh
+
+ExecStop=echo "QEMU restart monitor stopped!"
+
+Restart=on-failure
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
