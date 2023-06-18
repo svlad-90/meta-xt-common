@@ -23,7 +23,7 @@ qemu-system-aarch64 \
 -d guest_errors \
 -monitor telnet:127.0.0.1:1234,server,nowait \
 -device virtio-net-pci,disable-legacy=on,iommu_platform=on,romfile=\"\",id=nic0,netdev=net0,mac=08:00:27:ff:cb:cf \
--netdev type=tap,id=net0,ifname=vif-emu,br=xenbr0,script=no,downscript=no \
+-netdev type=tap,id=net0,ifname=vif-emu,br=xenbr0,script=no,downscript=no,vhost=on \
 -device virtio-blk-pci,scsi=off,disable-legacy=on,iommu_platform=on,drive=image \
 -drive if=none,id=image,format=raw,file=/dev/mmcblk0p3 \
 -device virtio-gpu-gl-pci,disable-legacy=on,iommu_platform=on \
