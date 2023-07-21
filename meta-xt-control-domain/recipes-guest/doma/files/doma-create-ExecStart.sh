@@ -2,7 +2,7 @@
 
 echo "Sleeping 5 seconds" && sleep 5;
 
-echo "Creating DomA" && /usr/sbin/xl -v create /etc/xen/doma.cfg && \
+echo "Creating DomA" && LIBXL_DEBUG_DUMP_DTB=/home/root/guest.dtb /usr/sbin/xl -v create /etc/xen/doma.cfg && \
 echo "Created DomA" && \
 echo "Pausing DomA" && /usr/sbin/xl -v pause DomA && \
 echo "Paused DomA" && \

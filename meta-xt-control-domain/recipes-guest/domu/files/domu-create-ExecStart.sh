@@ -2,7 +2,7 @@
 
 echo "Sleeping 5 seconds" && sleep 5;
 
-echo "Creating DomU" && /usr/sbin/xl -v create /etc/xen/domu.cfg && \
+echo "Creating DomU" && LIBXL_DEBUG_DUMP_DTB=/home/root/guest.dtb /usr/sbin/xl -v create /etc/xen/domu.cfg && \
 echo "Created DomU" && \
 echo "Pausing DomU" && /usr/sbin/xl -v pause DomU && \
 echo "Paused DomU" && \
