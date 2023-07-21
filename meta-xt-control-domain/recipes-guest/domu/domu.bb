@@ -21,6 +21,7 @@ SRC_URI = "\
     file://domu-create-ExecStopPost.sh \
     file://domu-restart-monitor.service \
     file://domu-restart-monitor-ExecStart.sh \
+    file://domu-clean-xenstore.sh \
 "
 
 FILES:${PN} = " \
@@ -33,6 +34,7 @@ FILES:${PN} = " \
     ${libdir}/xen/bin/domu-create-ExecStopPost.sh \
     ${systemd_unitdir}/system/domu-restart-monitor.service \
     ${libdir}/xen/bin/domu-restart-monitor-ExecStart.sh \
+    ${libdir}/xen/bin/domu-clean-xenstore.sh \
 "
 
 SYSTEMD_SERVICE:${PN} = "domu-create.service domu-unpause.service"
@@ -53,4 +55,5 @@ do_install() {
     install -m 0755 ${WORKDIR}/domu-create-ExecStart.sh ${D}${libdir}/xen/bin/
     install -m 0755 ${WORKDIR}/domu-create-ExecStopPost.sh ${D}${libdir}/xen/bin/
     install -m 0755 ${WORKDIR}/domu-restart-monitor-ExecStart.sh ${D}${libdir}/xen/bin/
+    install -m 0755 ${WORKDIR}/domu-clean-xenstore.sh ${D}${libdir}/xen/bin/
 }
