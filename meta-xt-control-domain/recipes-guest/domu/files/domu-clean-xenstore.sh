@@ -7,4 +7,5 @@ do
     i=${i%\"}
     i=${i#\"}
     xenstore-write $i/state "6"
+    xenstore-write $i/online "0"
 done
